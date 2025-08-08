@@ -42,6 +42,15 @@
             flex: 1 1 200px;
             max-width: 250px;
         }
+        .qr-url {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        canvas, img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
         @media (max-width: 500px) {
             .header-logo {
                 height: 40px;
@@ -61,48 +70,62 @@
     <p>Scan any QR to win exciting rewards!</p>
     
     <div class="qr-container">
-        <div class="qr-box">
+        <div class="qr-box" id="box1">
             <div id="qrcode1"></div>
             <p>Offer 1</p>
+            <div class="qr-url"></div>
         </div>
-        <div class="qr-box">
+        <div class="qr-box" id="box2">
             <div id="qrcode2"></div>
             <p>Offer 2</p>
+            <div class="qr-url"></div>
         </div>
-        <div class="qr-box">
+        <div class="qr-box" id="box3">
             <div id="qrcode3"></div>
             <p>Offer 3</p>
+            <div class="qr-url"></div>
         </div>
     </div>
 
     <script>
-        const maskedLinks = [
-            "https://adhezvs.github.io/Qr-Promo/offer1.html",
-            "https://adhezvs.github.io/Qr-Promo/offer2.html",
-            "https://adhezvs.github.io/Qr-Promo/offer3.html"
+        // Configuration - Replace with your actual links
+        const offers = [
+            { display: "prmpharmaceuticals.com/offer", actual: "https://forms.gle/F7gkVjxh6Q2xQaru6" },
+            { display: "prmpharmaceuticals.com/offer", actual: "https://forms.gle/n8L6iEMwSPk3WoQV6" },
+            { display: "prmpharmaceuticals.com/offer", actual: "https://forms.gle/m8kQ2rEaoUE3i36t8" }
         ];
         
-        function generateQRCode(elementId, url) {
+        // Generate QR with masked URL
+        function generateQRCode(elementId, boxId, offer) {
             document.getElementById(elementId).innerHTML = '';
+            
+            // Create QR with display text
             new QRCode(document.getElementById(elementId), {
-                text: url,
+                text: offer.display,
                 width: 200,
                 height: 200,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
+            
+            // Make clickable (redirects to actual link)
+            document.getElementById(boxId).onclick = function() {
+                window.open(offer.actual, '_blank');
+            };
         }
         
-        generateQRCode("qrcode1", maskedLinks[0]);
-        generateQRCode("qrcode2", maskedLinks[1]);
-        generateQRCode("qrcode3", maskedLinks[2]);
+        // Initialize
+        generateQRCode("qrcode1", "box1", offers[0]);
+        generateQRCode("qrcode2", "box2", offers[1]);
+        generateQRCode("qrcode3", "box3", offers[2]);
         
+        // Auto-refresh
         setInterval(() => {
-            const shuffled = [...maskedLinks].sort(() => 0.5 - Math.random());
-            generateQRCode("qrcode1", shuffled[0]);
-            generateQRCode("qrcode2", shuffled[1]);
-            generateQRCode("qrcode3", shuffled[2]);
+            const shuffled = [...offers].sort(() => 0.5 - Math.random());
+            generateQRCode("qrcode1", "box1", shuffled[0]);
+            generateQRCode("qrcode2", "box2", shuffled[1]);
+            generateQRCode("qrcode3", "box3", shuffled[2]);
         }, 5000);
     </script>
 </body>
