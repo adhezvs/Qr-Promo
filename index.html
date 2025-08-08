@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prm & Company Dhamaka Offer</title>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <style>
@@ -12,7 +13,6 @@
             background: #f5f5f5;
         }
         .header {
-            background: ;
             color: Black;
             padding: 15px;
             display: flex;
@@ -20,9 +20,10 @@
             justify-content: center;
             gap: 15px;
             margin-bottom: 20px;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
         }
         .header-logo {
-            height: 80px; /* Adjust based on your logo */
+            height: 80px;
             width: auto;
         }
         .qr-container {
@@ -38,18 +39,28 @@
             padding: 15px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1 1 200px; /* Makes QR boxes resize on smaller screens */
+            max-width: 250px; /* Prevents boxes from stretching too wide */
+        }
+        canvas, img {
+            max-width: 100% !important; /* Makes QR code scale */
+            height: auto !important;
+        }
+        @media (max-width: 500px) {
+            .header-logo {
+                height: 60px; /* Slightly smaller logo on mobile */
+            }
+            h1 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <!-- Prefix Logo -->
         <img src="https://raw.githubusercontent.com/adhezvs/Qr-Promo/main/logo.png" class="header-logo" alt="Logo">
-        
-        <!-- Header Text -->
         <h1>Prm & Company Dhamak Offer</h1>
-        
-        <!-- Suffix Logo (same as prefix) -->
         <img src="https://raw.githubusercontent.com/adhezvs/Qr-Promo/main/logo.png" class="header-logo" alt="Logo">
     </div>
     
@@ -71,33 +82,29 @@
     </div>
 
     <script>
-        // ======= REPLACE THESE ======= //
         const links = [
             "http://bit.ly/41zsbLI",
             "http://bit.ly/4lhgPTO",
             "http://bit.ly/4fyj7gc"
         ];
-        // ============================ //
         
         function generateQRCode(elementId) {
             const randomLink = links[Math.floor(Math.random() * links.length)];
             document.getElementById(elementId).innerHTML = '';
             new QRCode(document.getElementById(elementId), {
                 text: randomLink,
-                width: 150,
-                height: 150,
+                width: 200, // Slightly bigger for mobile
+                height: 200,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
         }
         
-        // Initial generation
         generateQRCode("qrcode1");
         generateQRCode("qrcode2");
         generateQRCode("qrcode3");
         
-        // Auto-refresh every 5 seconds
         setInterval(() => {
             generateQRCode("qrcode1");
             generateQRCode("qrcode2");
